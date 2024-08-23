@@ -1,0 +1,18 @@
+# Ref: https://docs.ansible.com/ansible/latest/collections/amazon/aws/aws_ec2_inventory.html
+# Ref: https://devopscube.com/setup-ansible-aws-dynamic-inventory/
+
+# to get the list of instance as per the inventory
+ansible-inventory -i aws_ec2.yml --list
+
+# to check as the graphical representation
+ansible-inventory -i aws_ec2.yml --graph
+
+# deploy ansible playbook with password
+ansible-playbook -i aws_ec2.yml web-app.yml --extra-vars "ansible_user=ansadmin ansible_password=ansadmin hosts=tag_Environment_dev"
+
+# deploy ansible playbooks without password, after setting up the ssh
+ansible-playbook -i aws_ec2.yml web-app.yml --extra-vars "hosts=tag_Environment_dev"
+
+
+# If required: to replace the default inventory file
+sudo sed -i 's/^#inventory\s*=.*/inventory       = \/home\/ansadmin\/aws_ec2.yml/' /etc/ansible/ansible.cfg

@@ -1,0 +1,9 @@
+---
+- name: Setting up webservers
+  hosts: webservers
+  become: true
+
+  tasks:
+  - name: creating user
+    ansible.builtin.user:
+      name: "vamsi"
