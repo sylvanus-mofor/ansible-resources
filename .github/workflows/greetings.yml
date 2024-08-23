@@ -1,0 +1,34 @@
+name: Greetings
+
+on:
+  pull_request_target:
+    types: [opened]
+  push:
+    branches:
+      - main  # Change this to your target branch
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+    - name: Display message on new commit
+      if: github.event_name == 'push'
+      run: echo "The commit has been pushed! Keep up the great work!"
+
+    - name: Display message on pull request
+      if: github.event_name == 'pull_request_target'
+      uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.ANSIBLE_ACTIONS }}
+        pr-message: "Thanks for opening this pull request! I appreciate your contribution!"
+
+    - name: Display message on first issue
+      if: github.event_name == 'issues'
+      uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.ANSIBLE_ACTIONS }}
+        issue-message: "Thanks for opening your first issue. I'll check and get back to you"
+
