@@ -2,22 +2,22 @@
 # Install Ansible using dnf
 sudo dnf install -y ansible
 
-# Create an Ansible user and set the password
-sudo useradd ansible
-echo "ansible:ansible" | sudo chpasswd
+# Create the sylva user and set the password to 'ansible'
+sudo useradd sylva
+echo "sylva:ansible" | sudo chpasswd
 
-# Grant the Ansible user passwordless sudo privileges
-echo "ansible ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/ansible
+# Grant the sylva user passwordless sudo privileges
+echo "sylva ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/sylva
 
 # Enable password authentication and root login in SSH
 sudo sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config
 sudo sed -i "s/#PermitRootLogin yes/PermitRootLogin yes/g" /etc/ssh/sshd_config
 sudo systemctl restart sshd
 
-# Generate SSH key for Ansible user
-sudo -u ansible ssh-keygen -t rsa -f /home/ansible/.ssh/id_rsa -q -N ""
-sudo chmod 700 /home/ansible/.ssh
-sudo chmod 600 /home/ansible/.ssh/id_rsa
+# Generate SSH key for sylva user
+sudo -u sylva ssh-keygen -t rsa -f /home/sylva/.ssh/id_rsa -q -N ""
+sudo chmod 700 /home/sylva/.ssh
+sudo chmod 600 /home/sylva/.ssh/id_rsa
 
 # Install expect for automating SSH key copying
 sudo dnf install -y expect
@@ -28,7 +28,7 @@ REMOTE_NODES=("172.31.42.112" "172.31.38.84") # Replace & add more IPs as needed
 # Loop through each IP address and copy the SSH key
 for REMOTE_NODE in "${REMOTE_NODES[@]}"; do
     expect -c "
-    spawn sudo -u ansible ssh-copy-id ansible@$REMOTE_NODE
+    spawn sudo -u sylva ssh-copy-id sylva@$REMOTE_NODE
     expect {
         \"*re you sure you want to continue connecting*\" { send \"yes\r\"; exp_continue }
         \"*pass*\" { send \"ansible\r\"; exp_continue }
@@ -37,6 +37,7 @@ for REMOTE_NODE in "${REMOTE_NODES[@]}"; do
     expect eof
     "
 done
+
 
 ###########################################################################
 #This sets us an ansible user called sylva with password 'ansible' and ssh access permissions compatible with Aws amazon linux 2023
@@ -128,8 +129,8 @@ for REMOTE_NODE in "${REMOTE_NODES[@]}"; do
 done
 
 # Revert SSH settings for improved security
-sudo sed -i "s/^PermitRootLogin yes/PermitRootLogin prohibit-password/" /etc/ssh/sshd_config
-sudo sed -i "s/^PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/sshd_config
+# sudo sed -i "s/^PermitRootLogin yes/PermitRootLogin prohibit-password/" /etc/ssh/sshd_config
+# sudo sed -i "s/^PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/sshd_config
 sudo systemctl restart sshd || { echo "Failed to restart SSH service"; exit 1; }
 
 echo "Setup complete. Review ${LOG_FILE} for details."
