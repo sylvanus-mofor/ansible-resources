@@ -1,23 +1,19 @@
-plugin: aws_ec2
-
 regions:
-  - us-east-1
+  - us-east-1  # Target the us-east-1 region
 
 filters:
-  # All instances with their `Environment` tag set to `dev`
-#  tag:Environment: dev
-  # All dev and QA hosts
-  tag:Environment:
-    - dev
-    - stage
-    - prod
-  # Getting the details of running instances only
-  instance-state-name: running
-# Grouping the instances based on tags
+  tag:Environment: dev  # Include only 'dev' environment instances
+  instance-state-name: running  # Filter to include only instances that are currently running
+
 keyed_groups:
-  - key: tags
-    prefix: tag
+  - key: tags.Name  # Group by 'Name' tag, prefixed with 'name_'
+  - key: instance_type  # Group by instance type, prefixed with 'type_'
 
+hostnames:
+  - private-ip-address  # Use private IP as hostname
 
+compose:
+  ansible_host: private-ip-address  # Connect using private IP
+  instance_name: tags.Name  # Store 'Name' tag as instance_name
 
 # Ref: https://docs.ansible.com/ansible/latest/collections/amazon/aws/aws_ec2_inventory.html
