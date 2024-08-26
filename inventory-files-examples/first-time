@@ -1,0 +1,13 @@
+[web]
+#Manually add the ip addresses of the web servers.
+172.31.57.43
+172.31.48.95
+
+[web:vars]
+http_port=80
+
+[db]
+#Manually add the ip addresses of the db server(s)
+112.22.21.123
+
+# Additional groups or variables can be defined here if needed
