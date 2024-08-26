@@ -6,6 +6,7 @@
   - name: Creating user Sylva
     user:
       name: Sylva
+      state: present
 
   - name: Installing git
     yum:
