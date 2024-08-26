@@ -11,3 +11,7 @@ http_port=80
 112.22.21.123
 
 # Additional groups or variables can be defined here if needed
+
+#############################DEFAULT ANSIBLE.CFG FILE###########
+[defaults]
+inventory = /etc/ansible/hosts
