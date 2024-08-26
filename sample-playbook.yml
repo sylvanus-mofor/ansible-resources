@@ -3,9 +3,9 @@
   hosts: webservers
   become: true
   tasks:
-  - name: Creating user captain-america
+  - name: Creating user Sylva
     user:
-      name: captain-america
+      name: Sylva
 
   - name: Installing git
     yum:
