@@ -15,5 +15,5 @@
 
     - name: create content
       copy:
-          content: "GM! Hello from JJTech"
+          content: "Greetings from Sylva"
           dest: /var/www/html/index.html
