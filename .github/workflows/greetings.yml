@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - main  # Change this to your target branch
+  issues:
 
 jobs:
   greeting:
