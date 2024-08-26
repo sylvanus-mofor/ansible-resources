@@ -1,19 +1,23 @@
+plugin: aws_ec2  # Use the AWS EC2 plugin for dynamic inventory
+
 regions:
   - us-east-1  # Target the us-east-1 region
 
 filters:
-  tag:Environment: dev  # Include only 'dev' environment instances
-  instance-state-name: running  # Filter to include only instances that are currently running
+  tag:Environment: dev  # Include only instances with 'Environment: dev' tag
+  instance-state-name: running  # Include only instances that are currently running
 
 keyed_groups:
-  - key: tags.Name  # Group by 'Name' tag, prefixed with 'name_'
-  - key: instance_type  # Group by instance type, prefixed with 'type_'
+  - key: tags.Name  # Group instances by 'Name' tag
+    prefix: name_   # Prefix group names with 'name_'
+  - key: instance_type  # Group instances by instance type
+    prefix: type_   # Prefix group names with 'type_'
 
 hostnames:
-  - private-ip-address  # Use private IP as hostname
+  - private-ip-address  # Use private IP address as the hostname
 
 compose:
-  ansible_host: private-ip-address  # Connect using private IP
-  instance_name: tags.Name  # Store 'Name' tag as instance_name
+  ansible_host: private-ip-address  # Connect using private IP address
+  instance_name: tags.Name  # Store the instance name from the 'Name' tag
 
 # Ref: https://docs.ansible.com/ansible/latest/collections/amazon/aws/aws_ec2_inventory.html
