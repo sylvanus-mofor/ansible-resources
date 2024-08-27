@@ -71,5 +71,5 @@ sudo chown -R sylva:sylva /etc/ansible
 # Revert SSH settings for improved security
 # sudo sed -i "s/^PermitRootLogin yes/PermitRootLogin prohibit-password/" /etc/ssh/sshd_config
 # sudo sed -i "s/^PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/sshd_config
-sudo systemctl restart sshd
+#sudo systemctl restart sshd
 
