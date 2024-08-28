@@ -1,0 +1,36 @@
+---
+- name: Install software packages on Amazon Linux 2023
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Update the package manager
+      ansible.builtin.yum:
+        name: "*"
+        state: latest
+
+    - name: Install Git
+      ansible.builtin.yum:
+        name: git
+        state: latest
+
+    - name: Install HTTPD (Apache)
+      ansible.builtin.yum:
+        name: httpd
+        state: latest
+
+    - name: Install Tree
+      ansible.builtin.yum:
+        name: tree
+        state: latest
+
+    - name: Install the latest Java 21
+      ansible.builtin.shell: |
+        amazon-linux-extras install java-openjdk11 -y
+        yum install java-21-amazon-corretto-devel -y
+
+    - name: Ensure HTTPD is started and enabled
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: yes
